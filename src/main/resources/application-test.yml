@@ -1,0 +1,27 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:batch_processor_test
+    username: user
+    password: pass
+    initialization-mode: always
+
+input:
+  file:
+    directory: file://${user.dir}/src/test/resources/files/processing/*.dat
+    delimiter: ç
+    chunkSize: 50
+    patternSaleItems:
+      regex: ((\d+)-(\d+)-(\d+(\.\d+)?))
+      groupId: 2
+      groupQuantity: 3
+      groupPrice: 4
+output:
+  file:
+    directory: ${user.dir}/src/test/resources/files/out
+    prefix: job_summary_sales
+    suffix: .done.dat
+    delimiter: ç
