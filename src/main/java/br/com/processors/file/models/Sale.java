@@ -1,19 +1,38 @@
 package br.com.processors.file.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Objects;
 
+@Entity
 public class Sale implements FileItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Positive
     private Long jobId;
+
     @Positive
-    private Long id;
+    private Long saleId;
+
     @NotEmpty
     private String seller;
+
     @NotEmpty
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sale_id")
     private List<SaleItem> items;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
     @Override
     public Long getJobId() {
@@ -25,12 +44,12 @@ public class Sale implements FileItem {
         this.jobId = jobId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSaleId() {
+        return saleId;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    public void setSaleId(final Long saleId) {
+        this.saleId = saleId;
     }
 
     public String getSeller() {
@@ -49,13 +68,15 @@ public class Sale implements FileItem {
         this.items = items;
     }
 
-    @Override
-    public String toString() {
-        return "Sale{" +
-            "jobId='" + jobId + '\'' +
-            ", id=" + id +
-            ", seller='" + seller + '\'' +
-            ", items=" + items +
-            '}';
+    public Double getTotal() {
+        final Double initialValue = 0d;
+
+        if (Objects.nonNull(this.items)) {
+            return this.items.stream()
+                .map(SaleItem::getTotal)
+                .reduce(initialValue, Double::sum);
+        }
+
+        return initialValue;
     }
 }

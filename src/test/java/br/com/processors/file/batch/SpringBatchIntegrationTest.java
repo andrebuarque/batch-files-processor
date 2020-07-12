@@ -21,14 +21,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static br.com.processors.file.TestConstants.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBatchTest
 @SpringBootTest
 @ContextConfiguration(classes = { BatchFilesProcessorApplication.class })
 @ActiveProfiles("test")
-public class SpringBatchIntegrationTest {
+public abstract class SpringBatchIntegrationTest {
     @Autowired
     protected JobLauncherTestUtils jobLauncherTestUtils;
 
@@ -94,24 +94,37 @@ public class SpringBatchIntegrationTest {
             .toJobParameters();
     }
 
-    protected int countRowsInTableWhere(final String table, final String jobId) {
-        return JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, table, "job_id=" + jobId);
+    protected int countRowsInTableWhereJobIdIsEqualTo(final String table, final String jobId) {
+        return countRowsInTableWhere(table, "job_id=" + jobId);
     }
 
-    protected void assertCountTableRows(final String table, final String jobId, final int expected) {
-        final int rows = countRowsInTableWhere(table, jobId);
+    protected int countRowsInTableWhere(final String table, final String where) {
+        return JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, table, where);
+    }
+
+    protected void assertCountRowsInTableByJobId(final String table, final String jobId, final int expected) {
+        final int rows = countRowsInTableWhereJobIdIsEqualTo(table, jobId);
         assertThat(rows).isEqualTo(expected);
     }
 
-    protected void assertIsEmptyTables(final String jobId) {
-        final int countCustomers = countRowsInTableWhere(TABLE_CUSTOMERS, jobId);
-        final int countSellers = countRowsInTableWhere(TABLE_SELLERS, jobId);
-        final int countSales = countRowsInTableWhere(TABLE_SALES, jobId);
-        final int countSaleItems = countRowsInTableWhere(TABLE_SALE_ITEMS, jobId);
+    protected void assertCountRowsInTableWhere(final String table, final String where, final int expected) {
+        final int rows = countRowsInTableWhere(table, where);
+        assertThat(rows).isEqualTo(expected);
+    }
 
-        assertThat(countCustomers).isZero();
-        assertThat(countSellers).isZero();
-        assertThat(countSales).isZero();
-        assertThat(countSaleItems).isZero();
+    protected void assertTablesAreEmpty(final String jobId) {
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 0);
+
+        assertCountSaleItemsByJobId(jobId, 0);
+    }
+
+    protected void assertCountSaleItemsByJobId(final String jobId, final int expected) {
+        final String table = TABLE_SALES + ", " + TABLE_SALE_ITEMS;
+        final String where = String.format(
+            "%s.id = %s.sale_id AND %s.job_id = %s", TABLE_SALES, TABLE_SALE_ITEMS, TABLE_SALES, jobId);
+
+        assertCountRowsInTableWhere(table, where, expected);
     }
 }

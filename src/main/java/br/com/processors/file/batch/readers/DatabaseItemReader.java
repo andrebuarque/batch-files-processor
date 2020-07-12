@@ -24,7 +24,7 @@ public class DatabaseItemReader implements ItemReader<SummarySales> {
     @Override
     public SummarySales read() {
         if (Objects.isNull(summarySales)) {
-            summarySales = summaryReportService.execute(jobId);
+            summarySales = summaryReportService.execute(Long.parseLong(jobId));
             return summarySales;
         }
 

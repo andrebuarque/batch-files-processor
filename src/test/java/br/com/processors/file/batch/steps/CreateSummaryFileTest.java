@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static br.com.processors.file.TestConstants.*;
 
 @RunWith(SpringRunner.class)
-public class CreateSummaryFileTest extends SpringBatchIntegrationTest {
+class CreateSummaryFileTest extends SpringBatchIntegrationTest {
     private static final String STEP_NAME = "createSummaryFile";
 
     @Test
@@ -27,10 +27,10 @@ public class CreateSummaryFileTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = new JobParametersBuilder()
             .addString(JOB_ID_PARAM, jobId).toJobParameters();
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 4);
-        assertCountTableRows(TABLE_SELLERS, jobId, 6);
-        assertCountTableRows(TABLE_SALES, jobId, 2);
-        assertCountTableRows(TABLE_SALE_ITEMS, jobId, 6);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 4);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 6);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 2);
+        assertCountSaleItemsByJobId(jobId, 6);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 

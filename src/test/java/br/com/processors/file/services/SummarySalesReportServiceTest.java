@@ -9,11 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import static br.com.processors.file.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 @ActiveProfiles("test")
 public class SummarySalesReportServiceTest {
     @Autowired
@@ -24,13 +26,13 @@ public class SummarySalesReportServiceTest {
 
     @AfterEach
     public void afterEachTest() {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, TABLE_CUSTOMERS, TABLE_SELLERS, TABLE_SALES, TABLE_SALE_ITEMS);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, TABLE_CUSTOMERS, TABLE_SELLERS, TABLE_SALE_ITEMS, TABLE_SALES);
     }
 
     @Test
     @Sql("/sql/import-data.sql")
     public void testReportWithData() {
-        final SummarySales summarySales = summarySalesReportService.execute("1");
+        final SummarySales summarySales = summarySalesReportService.execute(1L);
 
         assertThat(summarySales).isNotNull();
         assertThat(summarySales.countSeller()).isEqualTo(6);
@@ -41,7 +43,7 @@ public class SummarySalesReportServiceTest {
 
     @Test
     public void testReportWithoutData() {
-        final SummarySales summarySales = summarySalesReportService.execute("1");
+        final SummarySales summarySales = summarySalesReportService.execute(1L);
 
         assertThat(summarySales).isNotNull();
         assertThat(summarySales.countSeller()).isZero();

@@ -49,7 +49,7 @@ public class SaleFieldSetMapper implements FieldSetMapper<FileItem> {
         final Sale sale = new Sale();
 
         if (NumberUtils.isParsable(id)) {
-            sale.setId(Long.parseLong(id));
+            sale.setSaleId(Long.parseLong(id));
         }
 
         sale.setJobId(Long.parseLong(jobId));
@@ -73,8 +73,10 @@ public class SaleFieldSetMapper implements FieldSetMapper<FileItem> {
             final String itemQuantity = matcher.group(patternSaleItems.getGroupQuantity());
             final String itemPrice = matcher.group(patternSaleItems.getGroupPrice());
 
-            final SaleItem saleItem =
-                new SaleItem(Long.parseLong(itemId), Integer.parseInt(itemQuantity), Float.parseFloat(itemPrice));
+            final SaleItem saleItem = new SaleItem();
+            saleItem.setItemId(Long.parseLong(itemId));
+            saleItem.setQuantity(Integer.parseInt(itemQuantity));
+            saleItem.setPrice(Float.parseFloat(itemPrice));
 
             items.add(saleItem);
         }

@@ -1,21 +1,10 @@
 package br.com.processors.file.models;
 
-import javax.validation.constraints.Positive;
+import javax.persistence.Entity;
 
-public class Seller extends Person implements FileItem {
-    @Positive
-    private Long jobId;
+@Entity
+public class Seller extends Person {
     private Float salary;
-
-    @Override
-    public Long getJobId() {
-        return jobId;
-    }
-
-    @Override
-    public void setJobId(final Long jobId) {
-        this.jobId = jobId;
-    }
 
     public Float getSalary() {
         return salary;
@@ -23,15 +12,5 @@ public class Seller extends Person implements FileItem {
 
     public void setSalary(final Float salary) {
         this.salary = salary;
-    }
-
-    @Override
-    public String toString() {
-        return "Seller{" +
-            "jobId='" + jobId + '\'' +
-            ", salary=" + salary +
-            ", document='" + document + '\'' +
-            ", name='" + name + '\'' +
-            '}';
     }
 }

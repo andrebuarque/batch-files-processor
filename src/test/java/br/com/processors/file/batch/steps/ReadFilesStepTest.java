@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static br.com.processors.file.TestConstants.*;
 
 @RunWith(SpringRunner.class)
-public class ReadFilesStepTest extends SpringBatchIntegrationTest {
+class ReadFilesStepTest extends SpringBatchIntegrationTest {
     private static final String STEP_NAME = "readFiles";
 
     @BeforeAll
@@ -29,9 +29,9 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.FAILED);
     }
@@ -57,13 +57,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 2);
-        assertCountTableRows(TABLE_SELLERS, jobId, 2);
-        assertCountTableRows(TABLE_SALES, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 2);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -74,13 +74,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 2);
-        assertCountTableRows(TABLE_SELLERS, jobId, 1);
-        assertCountTableRows(TABLE_SALES, jobId, 1);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 1);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 1);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -91,13 +91,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 2);
-        assertCountTableRows(TABLE_SELLERS, jobId, 2);
-        assertCountTableRows(TABLE_SALES, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 2);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 2);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -108,13 +108,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 22);
-        assertCountTableRows(TABLE_SELLERS, jobId, 22);
-        assertCountTableRows(TABLE_SALES, jobId, 22);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 22);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 22);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 22);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -125,13 +125,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 3335);
-        assertCountTableRows(TABLE_SELLERS, jobId, 3334);
-        assertCountTableRows(TABLE_SALES, jobId, 3332);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 3335);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 3334);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 3332);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -142,13 +142,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 0);
-        assertCountTableRows(TABLE_SELLERS, jobId, 25);
-        assertCountTableRows(TABLE_SALES, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 25);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 0);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -159,13 +159,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 25);
-        assertCountTableRows(TABLE_SELLERS, jobId, 0);
-        assertCountTableRows(TABLE_SALES, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 25);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 0);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
@@ -176,13 +176,13 @@ public class ReadFilesStepTest extends SpringBatchIntegrationTest {
         final JobParameters jobParams = getJobParameters(filenameIn);
         final String jobId = jobParams.getString(JOB_ID_PARAM);
 
-        assertIsEmptyTables(jobId);
+        assertTablesAreEmpty(jobId);
 
         final JobExecution jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME, jobParams);
 
-        assertCountTableRows(TABLE_CUSTOMERS, jobId, 0);
-        assertCountTableRows(TABLE_SELLERS, jobId, 0);
-        assertCountTableRows(TABLE_SALES, jobId, 24);
+        assertCountRowsInTableByJobId(TABLE_CUSTOMERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SELLERS, jobId, 0);
+        assertCountRowsInTableByJobId(TABLE_SALES, jobId, 25);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }

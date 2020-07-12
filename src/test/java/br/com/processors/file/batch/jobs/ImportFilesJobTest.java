@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class ImportFilesJobTest extends SpringBatchIntegrationTest {
+class ImportFilesJobTest extends SpringBatchIntegrationTest {
 
     @BeforeAll
     public static void beforeAll() throws IOException {
@@ -188,7 +188,7 @@ public class ImportFilesJobTest extends SpringBatchIntegrationTest {
 
         final Path outputFilePath = getOutputFilePath(jobParams.getString(JOB_ID_PARAM));
         assertThat(outputFilePath).exists();
-        assertThat(getContentFile(outputFilePath)).isEqualTo("0ç0ç65çPaulo");
+        assertThat(getContentFile(outputFilePath)).isEqualTo("0ç0ç128çAndre");
         assertThat(getProcessingFilePath(filenameIn)).doesNotExist();
     }
 }
