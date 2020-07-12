@@ -42,7 +42,7 @@ public abstract class SpringBatchIntegrationTest {
     protected String outputSuffix;
 
     protected static final String JOB_ID_PARAM = "job.id";
-    protected static final String FILE_EXTENSION = "*.dat";
+    protected static final String FILE_EXTENSION = ".dat";
     protected static final String USER_DIR = System.getProperty("user.dir");
     protected static final String INPUT_DIR = USER_DIR + "/src/test/resources/files/in/";
     protected static final String PROCESSING_DIR = USER_DIR + "/src/test/resources/files/processing/";
@@ -69,7 +69,7 @@ public abstract class SpringBatchIntegrationTest {
     }
 
     protected String getInputFileDir(final String filename) {
-        return "file://" + PROCESSING_DIR + filename + FILE_EXTENSION;
+        return "file://" + PROCESSING_DIR + filename + "*" + FILE_EXTENSION;
     }
 
     protected String getContentFile(final Path path) throws IOException {
